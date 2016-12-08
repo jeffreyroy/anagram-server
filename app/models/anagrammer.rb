@@ -9,8 +9,9 @@ class Anagrammer
   def initialize
     @max_anagrams = 10
     @word_list = []
+    @level = 0
     initialize_word_list
-    # create_subletter_hash
+    create_subletter_hash
     # @subword_list = []
     # create_trie
     # get_text
@@ -104,6 +105,15 @@ class Anagrammer
 
   # This is MUCH more efficient!
   def subwords(text, words)
+    # Error checking
+    if text.empty?
+      puts "ERROR - I'm trying to find subwords of an empty string!"
+      return []
+    end
+    if words.empty?
+      puts "ERROR - I'm trying to find subwords of #{text} using an empty word list!"
+      return []
+    end
     s = create_big_subletter_set(text)
     words.select { |word| @subletter_hash[word] <= s }
   end
@@ -115,7 +125,7 @@ class Anagrammer
       puts "ERROR - I'm trying to anagram an empty string!"
       return []
     end
-    if word_list.empty?
+    if words.empty?
       puts "ERROR - I'm trying to use an empty word list!"
       return []
     end
