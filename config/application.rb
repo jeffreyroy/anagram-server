@@ -1,4 +1,5 @@
 require_relative 'boot'
+# require_relative '../app/models/anagrammer'
 
 require 'rails/all'
 
@@ -11,5 +12,7 @@ module AnagramServer
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    # config.blurb = "Loading dictionary..."
+    # config.anagrammer = Anagrammer.new("twl06.txt")
   end
 end

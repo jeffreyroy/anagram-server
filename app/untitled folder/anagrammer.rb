@@ -8,9 +8,10 @@ class Anagrammer
 
   def initialize(file_name)
     @max_anagrams = 10
+    @word_list = []
     # Read words from file
-    @string_list = read_words_from_file(file_name)
-    initialize_word_list
+    # @string_list = read_words_from_file(file_name)
+    # initialize_word_list
     create_subletter_hash
     puts
     # @subword_list = []
@@ -65,66 +66,20 @@ class Anagrammer
     letter_string_list
   end
 
-  # def create_trie
-  #   puts "Generating trie..."
+
+
+
+  # # Generate list of word objects
+  # def initialize_word_list
+  #   puts "Generating words..."
   #   count = 0
-  #   alphabet = Word::ALPHABET
-  #   # Create root node
-  #   @start_node = Node.new("")
-  #   @node_hash = { "" => @start_node }
-  #   # Loop through all words
-  #   @word_list.each do |word|
+  #   @word_list = @string_list.map do |string| 
   #     count += 1
   #     print "\r#{count}"
-  #     cur_node = @start_node
-  #     new_node = @start_node
-  #     cur_string = ""
-  #     # Loop through all letters
-  #     alphabet.each_char do |letter|
-  #       # If word contains this letter
-  #       if word.letters[letter] > 0
-  #         # Add letter(s) to current string
-  #         cur_string = cur_string + letter * word.letters[letter]
-  #         # Create new node if necessary
-  #         new_node = @node_hash[cur_string]
-  #         if !new_node
-  #           new_node = Node.new(cur_string)
-  #           @node_hash[cur_string] = new_node
-  #         end
-  #         # Add child if necessary
-  #         if !cur_node.children.include?(new_node)
-  #           cur_node.children << new_node
-  #         end
-  #         # Update current node
-  #         cur_node = new_node
-  #       end
-  #     end
-  #     cur_node.terminal = true
+  #     Word.new(string)
   #   end
+  #   puts
   # end
-
-
-  # Read list of words from text file
-  def read_words_from_file(file_name)
-    @file = File.new(file_name)
-    puts "Reading file #{file_name}..."
-    f = @file.readlines.map { |line| line.chomp }
-    puts "#{f.length} lines"
-    puts "Sorting..."
-    f.sort { |a, b| b.length <=> a.length}
-  end
-
-  # Generate list of word objects
-  def initialize_word_list
-    puts "Generating words..."
-    count = 0
-    @word_list = @string_list.map do |string| 
-      count += 1
-      print "\r#{count}"
-      Word.new(string)
-    end
-    puts
-  end
 
   # Get text to anagram
   def get_text
@@ -149,38 +104,12 @@ class Anagrammer
     puts array.first(n)
   end
 
-  # def subwords(text, words)
-  #   words.select { |word| text >= word }
-  # end
 
   # This is MUCH more efficient!
   def subwords(text, words)
     s = create_big_subletter_set(text)
     words.select { |word| @subletter_hash[word] <= s }
   end
-
-  # def subwords(text, words)
-  #   @subword_list = []
-  #   trie_search(text, @start_node)
-  #   @subword_list
-  # end
-
-  # def trie_search(text, current_node)
-  #   # puts "Searching trie..."
-  #   # print "/r#{current_node.id}"
-  #   if current_node.terminal
-  #     @subword_list << current_node.id
-  #   end
-  #   c = current_node.children
-  #   if !c.empty?
-  #     c.each do |new_node|
-  #       new_letters = new_node.id.delete(current_node.id)
-  #       if text.letters[new_letters[0]] >= new_letters.length
-  #         trie_search(text, new_node)
-  #       end
-  #     end
-  #   end
-  # end
 
 
   def anagrams(text, words)
@@ -335,8 +264,8 @@ class Anagrammer
 end
 
 # a = Anagrammer.new("small.txt")
-a = Anagrammer.new("twl06.txt")
-puts a.current_text.a
+# a = Anagrammer.new("twl06.txt")
+# puts a.current_text.a
 # a.prefer("old")
 # a.unprefer("pauldron")
 # a.prefer("normal")
@@ -360,7 +289,7 @@ puts a.current_text.a
 # end
 
 # s = a.subwords(a.current_text, a.word_list)
-s = a.anagrams(a.current_text, a.word_list)
+# s = a.anagrams(a.current_text, a.word_list)
 
 # p a.subword_timer
-a.main_loop
+# a.main_loop

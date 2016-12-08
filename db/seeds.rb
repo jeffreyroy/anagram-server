@@ -5,3 +5,37 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+# require 'csv'
+
+@word_list = []
+
+def read_words_from_file(file_name)
+  file_location = Rails.root.join('db', file_name)
+  @file = File.new(file_location)
+  puts "Reading file #{file_name}..."
+  @word_list = @file.readlines.map { |line| line.chomp }
+  # @word_list = CSV.parse(@file, :headers => false)
+  puts "#{@word_list.length} lines"
+end
+
+def sort_word_list
+  puts "Sorting..."
+  @word_list.sort! { |a, b| b.length <=> a.length}
+end
+
+def initialize_word_list
+  puts "Generating words..."
+  count = 0
+  @word_list.each do |string| 
+    count += 1
+    print "\r#{count}"
+    Vocab.create( word_string: string )
+  end
+  puts
+end
+
+read_words_from_file("twl06.txt")
+sort_word_list
+initialize_word_list
