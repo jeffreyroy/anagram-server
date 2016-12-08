@@ -10,12 +10,10 @@ class Anagrammer
     @max_anagrams = 10
     @word_list = []
     initialize_word_list
-    create_subletter_hash
-    puts
+    # create_subletter_hash
     # @subword_list = []
     # create_trie
-    puts
-    get_text
+    # get_text
   end
 
   # Experimental subword algorithm
@@ -29,6 +27,7 @@ class Anagrammer
       print "\r#{count}"
       @subletter_hash[word] = create_subletter_set(word)
     end
+    puts
   end
 
   def create_subletter_set(word)

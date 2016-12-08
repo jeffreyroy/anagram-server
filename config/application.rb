@@ -13,6 +13,6 @@ module AnagramServer
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     # config.blurb = "Loading dictionary..."
-    # config.anagrammer = Anagrammer.new("twl06.txt")
+    # config.anagrammer = Anagrammer.new
   end
 end
