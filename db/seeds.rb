@@ -36,6 +36,6 @@ def initialize_word_list
   puts
 end
 
-read_words_from_file("twl06.txt")
+read_words_from_file("sorted-common.txt")
 sort_word_list
 initialize_word_list

@@ -3,11 +3,12 @@ require_relative 'trie'
 require 'set'
 
 class Anagrammer
-  attr_accessor :word_list, :full_text, :max_anagrams
+  attr_accessor :word_list, :full_text, :max_anagrams, :max_word_anagrams
   attr_reader :current_text, :node_hash, :start_node
 
   def initialize
     @max_anagrams = 10
+    @max_word_anagrams = 2
     @word_list = []
     @level = 0
     initialize_word_list
@@ -161,7 +162,9 @@ class Anagrammer
               new_anagram = word + " " + cur_anagram
               anagram_list << new_anagram
               puts new_anagram if @level == 1
-              if anagram_list.length > @max_anagrams
+              # Check to see whether we've reached the limit on the
+              # number of anagrams to generate
+              if (@level == 1 && anagram_list.length >= @max_anagrams) || (@level > 1 && anagram_list.length >= @max_word_anagrams)
                 @level -= 1
                 return anagram_list 
               end
