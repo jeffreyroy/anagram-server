@@ -102,6 +102,10 @@ class Anagrammer
     puts array.first(n)
   end
 
+  def current_subwords
+    subwords(@current_text, @word_list)
+  end
+
 
   # This is MUCH more efficient!
   def subwords(text, words)

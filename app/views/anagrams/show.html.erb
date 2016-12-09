@@ -1,6 +1,29 @@
-<h2>Anagrams for '<%= @text %>'</h2>
-<ul>
-  <% @anagrams.each do |anagram| %>
-    <li><%= anagram %></li>
-  <% end %>
-</ul>
+<div class="column" id="subwords">
+  <h3>Subwords</h3>
+    <ul>
+      <% @subwords.each do |word| %>
+        <li><%= word %></li>
+      <% end %>
+    </ul>
+</div>
+
+<div class="column">
+
+  <h2>Anagrams for '<%= @text %>'</h2>
+
+  <div id="remaining">
+    <h3>Remaining text</h3>
+    <%= @text %>
+  </div>
+
+  <div id="anagrams">
+    <h3>Anagrams</h3>
+    <ul>
+      <% @anagrams.each do |anagram| %>
+        <li><%= anagram %></li>
+      <% end %>
+    </ul>
+  </div>
+
+</div>
+
