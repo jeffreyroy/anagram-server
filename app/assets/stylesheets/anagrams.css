@@ -2,7 +2,8 @@ div {
   font-family: sans-serif;
 }
 
-#remaining {
+.section {
+  border-top: 1px solid black;
   margin-bottom: 1em;
 }
 
@@ -15,12 +16,8 @@ div {
   border: 1px solid black;
 }
 
-#anagrams {
-  border-top: 1px solid black;
-}
-
 #subwords {
-  width: 150px;
-  height: 500px;
+  width: 10em;
+  height: 40em;
   overflow: auto;
 }

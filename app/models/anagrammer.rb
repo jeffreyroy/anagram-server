@@ -223,10 +223,8 @@ class Anagrammer
     if string.length == 0 || !(@current_text >= word)
       response[:status] = "fail"
     else
-      # If subword isn't on list, add it
-      if !@word_list.include?(word)
-        prefer(string)
-      end
+      # Put subword at top of list
+      prefer(string)
       # Subtract word from current text
       @current_text -= word
       response[:text] = @current_text

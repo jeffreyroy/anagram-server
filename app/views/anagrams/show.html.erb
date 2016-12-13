@@ -26,10 +26,11 @@
       <%= @text %>
     </div>
   </div>
+  <div>
     <h3>Add subword:</h3>
     <%= form_tag("subword", method: "post", id: "subword-form") do %>
       <%= text_field_tag(:subword) %>
-      <%= submit_tag("Search") %>
+      <%= submit_tag("Submit", id: "submit-button", data: { disable_with: "Thinking..." }) %>
     <% end %>
   </div>
 

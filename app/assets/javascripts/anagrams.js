@@ -14,6 +14,7 @@ var subwordForm = function() {
 
 var addSubword = function(event) {
   event.preventDefault();
+  form = this;
   targetURL=$(this).attr("action");
   method=$(this).attr("method");
   data=$(this).serialize();
@@ -25,11 +26,21 @@ var addSubword = function(event) {
     dataType: 'json'
   })
   .done(function(response){
+    form.reset();
+    resetButton();
     updateText(response);
   })
   .fail(function(response){
+    form.reset();
+    resetButton();
     alert("Can't add subword");
   })
+}
+
+// Need to reset button manually?
+var resetButton = function() {
+  $('#submit-button').attr('disabled', false);
+  $('#submit-button').val('Submit');
 }
 
 var updateText = function(response) {
@@ -49,5 +60,9 @@ var updateSubwords = function(list) {
 }
 
 var updateAnagrams = function(list) {
-
+  anagrams = $('#anagrams')
+  anagrams.empty();
+  for (i in list) {
+    anagrams.append("<li>" + list[i] + "</li>");
+  }
 }
