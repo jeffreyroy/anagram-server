@@ -2,6 +2,10 @@ div {
   font-family: sans-serif;
 }
 
+h1 {
+  text-align: center;
+}
+
 .section {
   border-top: 1px solid black;
   margin-bottom: 1em;

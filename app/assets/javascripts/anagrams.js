@@ -47,22 +47,19 @@ var updateText = function(response) {
   console.log(response);
   $('#remaining').html(response["text"]);
   $('#current-anagram').html(response["current"]);
-  updateSubwords(response["subwords"]);
-  updateAnagrams(response["anagrams"]);
+  updateList('#subword-list', response["subwords"]);
+  updateList('#anagrams', response["anagrams"]);
 }
 
-var updateSubwords = function(list) {
-  subwords = $('#subword-list')
-  subwords.empty();
-  for (i in list) {
-    subwords.append("<li>" + list[i] + "</li>");
+var updateList = function(id, list) {
+  listElement = $(id)
+  listElement.empty();
+  if(list.length == 0) {
+    listElement.append("(none)");
   }
-}
-
-var updateAnagrams = function(list) {
-  anagrams = $('#anagrams')
-  anagrams.empty();
-  for (i in list) {
-    anagrams.append("<li>" + list[i] + "</li>");
+  else {
+    for (i in list) {
+      listElement.append("<li>" + list[i] + "</li>");
+    }
   }
 }
