@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   get 'anagrams/index'
   get 'anagrams/new'
   post 'anagrams' => 'anagrams#create'
+  post 'anagrams/subword' => 'anagrams#subword'
   get 'anagrams/:text' => 'anagrams#show'
   get 'anagrams/:text/show' => 'anagrams#show'
-
 
 end

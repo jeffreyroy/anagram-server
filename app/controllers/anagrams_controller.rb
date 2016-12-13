@@ -20,11 +20,35 @@ class AnagramsController < ApplicationController
     @text = Word.new(params[:text])
     puts @text
     a = Rails.application.config.anagrammer
+    a.set_text(@text)
+    @current = a.current_anagram
     puts "Word list begins with #{a.word_list[0]}"
     puts "Generating anagrams..."
-    @subwords = a.subwords(@text, a.word_list)
-    @anagrams = a.anagrams(@text, a.word_list)
+    @subwords = a.current_subwords
+    @anagrams = a.current_anagrams
+  end
 
+  def subword
+    subword = params[:subword]
+    puts "Adding subword #{subword}"
+    a = Rails.application.config.anagrammer
+    @response = a.server_response(subword)
+    status = @response[:status]
+    respond_to do |format|
+      if status != "fail"
+        # It's a subword
+        format.html do
+          redirect_to "/anagrams/#{a.current_text}"
+        end
+        format.json { render json: @response, status: :ok}
+      else
+        format.html do
+          redirect_to "/anagrams/#{a.current_text}"
+        end
+        # It's not a subword
+        format.json { render json: @response, status: :unprocessable_entity }
+      end
+    end
   end
 
 end

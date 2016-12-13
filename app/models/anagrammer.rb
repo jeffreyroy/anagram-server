@@ -4,7 +4,7 @@ require 'set'
 
 class Anagrammer
   attr_accessor :word_list, :full_text, :max_anagrams, :max_word_anagrams
-  attr_reader :current_text, :node_hash, :start_node
+  attr_reader :current_text, :node_hash, :start_node, :current_anagram
 
   def initialize
     @max_anagrams = 10
@@ -87,6 +87,9 @@ class Anagrammer
       puts "Enter word or short phrase to anagram:"
       text = gets.chomp
     end
+  end
+
+  def set_text(text)
     @full_text = Word.new(text)
     reset_text
   end
@@ -123,6 +126,10 @@ class Anagrammer
     words.select { |word| @subletter_hash[word] <= s }
   end
 
+
+  def current_anagrams
+    anagrams(@current_text, @word_list)
+  end
 
   def anagrams(text, words)
     # Error checking
@@ -208,6 +215,39 @@ class Anagrammer
     end
   end
 
+  # Return json response for form submission
+  def server_response(string)
+    word = Word.new(string)
+    response = {}
+    # Check whether string is a subword
+    if string.length == 0 || !(@current_text >= word)
+      response[:status] = "fail"
+    else
+      # If subword isn't on list, add it
+      if !@word_list.include?(word)
+        prefer(string)
+      end
+      # Subtract word from current text
+      @current_text -= word
+      response[:text] = @current_text
+      @current_anagram += " " + word
+      response[:current] = @current_anagram
+      if @current_text.empty?
+        # If no text remaining, then anagram is complete
+        response[:status] = "anagram"
+        response[:subwords] = []
+        response[:anagrams] = []
+      else
+        # Anagram remaining text
+        response[:subwords] = current_subwords
+        response[:anagrams] = current_anagrams
+        response[:status] = "subword"
+      end
+      response
+    end
+  end
+
+  # Console interface (not used by web server)
   def get_word
     done = false
     while !done
