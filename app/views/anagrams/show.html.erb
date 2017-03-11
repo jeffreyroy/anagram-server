@@ -1,13 +1,4 @@
-<div class="column" id="subwords">
-  <h3>Subwords</h3>
-    <ul>
-      <div id="subword-list">
-        <% @subwords.each do |word| %>
-          <li><%= word %></li>
-        <% end %>
-      </div>
-    </ul>
-</div>
+
 
 <div class="column">
 
@@ -26,6 +17,23 @@
       <%= @text %>
     </div>
   </div>
+
+  <div class="section">
+    <h3>Suggested anagrams</h3>
+    <ul>
+      <div id="anagrams">
+        <% @anagrams.each do |anagram| %>
+          <li><%= anagram %></li>
+        <% end %>
+      </div>
+    </ul>
+  </div>
+
+</div>
+
+<div class="column" id="subwords">
+  <h2>Add words to anagram</h2>
+
   <div class="section">
     <h3>Add subword:</h3>
     <%= form_tag("subword", method: "post", id: "subword-form") do %>
@@ -35,11 +43,11 @@
   </div>
 
   <div class="section">
-    <h3>Anagrams</h3>
+    <h3>Suggested words</h3>
     <ul>
-      <div id="anagrams">
-        <% @anagrams.each do |anagram| %>
-          <li><%= anagram %></li>
+      <div id="subword-list">
+        <% @subwords.each do |word| %>
+          <li class="subword"><%= word %></li>
         <% end %>
       </div>
     </ul>

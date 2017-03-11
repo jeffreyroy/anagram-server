@@ -1,5 +1,13 @@
-div {
+body {
   font-family: sans-serif;
+}
+
+div {
+  
+}
+
+textarea, input {
+  font-size: 100%;
 }
 
 h1 {
@@ -21,7 +29,13 @@ h1 {
 }
 
 #subwords {
-  width: 10em;
+  width: 20em;
   height: 40em;
   overflow: auto;
+}
+
+.subword {
+  list-style-type: none;
+  color: darkblue;
+  cursor: pointer;
 }

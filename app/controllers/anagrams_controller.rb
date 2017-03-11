@@ -25,7 +25,11 @@ class AnagramsController < ApplicationController
     puts "Word list begins with #{a.word_list[0]}"
     puts "Generating anagrams..."
     @subwords = a.current_subwords
-    @anagrams = a.current_anagrams
+    if @text.length > 25
+      @anagrams = ["(Text too long to anagram; add words)"]
+    else
+      @anagrams = a.current_anagrams
+    end
   end
 
   def subword

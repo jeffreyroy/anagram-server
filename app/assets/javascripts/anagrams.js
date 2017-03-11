@@ -1,6 +1,7 @@
 $(document).ready(function() {
   getDictionary();
   subwordForm();
+  subwordLink();
   
 });
 
@@ -9,19 +10,59 @@ var getDictionary = function () {
 }
 
 var subwordForm = function() {
-  $("#subword-form").on("submit", addSubword);
+  $("#subword-form").on("submit", submitForm);
 }
 
-var addSubword = function(event) {
+var submitForm = function(event) {
   event.preventDefault();
   form = this;
-  targetURL=$(this).attr("action");
-  method=$(this).attr("method");
   data=$(this).serialize();
   console.log(data);
   $.ajax({
-    method: method,
-    url: targetURL,
+    method: "post",
+    url: "subword",
+    data: data,
+    dataType: 'json'
+  })
+  .done(function(response){
+    form.reset();
+    resetButton();
+    updateText(response);
+  })
+  .fail(function(response){
+    form.reset();
+    resetButton();
+    alert("Can't add subword");
+  })
+}
+
+var subwordLink = function() {
+  $("#subword-list").on("click", ".subword", submitSubword);
+}
+
+var submitSubword = function(event) {
+  var word =$(this).html();
+  data = "subword=" + word;
+  console.log(data);
+  $.ajax({
+    method: "post",
+    url: "subword",
+    data: data,
+    dataType: 'json'
+  })
+  .done(function(response){
+    updateText(response);
+  })
+  .fail(function(response){
+    alert("Can't add subword");
+  })
+}
+
+var addSubword = function(data) {
+  console.log(data);
+  $.ajax({
+    method: "post",
+    url: "subword",
     data: data,
     dataType: 'json'
   })
@@ -59,7 +100,7 @@ var updateList = function(id, list) {
   }
   else {
     for (i in list) {
-      listElement.append("<li>" + list[i] + "</li>");
+      listElement.append("<li class='subword'>" + list[i] + "</li>");
     }
   }
 }
