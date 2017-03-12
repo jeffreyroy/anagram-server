@@ -1,0 +1,2 @@
+class Anagram < ApplicationRecord
+end
