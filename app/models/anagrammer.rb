@@ -216,7 +216,7 @@ class Anagrammer
   end
 
   # Return json response for form submission
-  def server_response(string)
+  def add_to_anagram(string)
     word = Word.new(string)
     response = {}
     # Check whether string is a subword
@@ -241,67 +241,32 @@ class Anagrammer
         response[:anagrams] = current_anagrams
         response[:status] = "subword"
       end
-      response
     end
+    response
   end
 
-  # Console interface (not used by web server)
-  def get_word
-    done = false
-    while !done
-      print "Enter a subword: "
-      string = gets.chomp
-      word = Word.new(string)
-      # Check to see whether user is entering a command
-      if(string[0] == "$")
-        execute_command(string.delete("$"))
-        return nil
-      elsif !(@current_text >= word)
-        puts "That's not a subword. "
-      elsif !@word_list.include?(word)
-        puts "That's not on the list."
-        puts "Would you like to add it? (y/n)"
-        answer = gets.chomp.downcase[0]
-        if answer == "y"
-          prefer(string)
-          done = true
-        end
-      else 
-        prefer(string)
-        done = true
-      end
-    end
-    word
-  end
 
-  def execute_command(string)
-    case string
-    when "reset"
-      reset_text
-    when "subwords"
-      s = subwords(@current_text, @word_list)
-      puts "Best subwords: "
-      display_first(s, 10)
-    when "anagrams"
-      s = anagrams(@current_text, @word_list)
-      # puts "Best anagrams: "
-      # display_first(s, 10)
-    when "words"
-      display_first(@word_list, 10)
-    end
-  end
+  # Return json response for form submission
+  def remove_from_anagram(string)
+    word = Word.new(string)
+    response = {}
+    # Check whether string is a subword of anagram
+    if string.length == 0 || !@current_anagram.slice(" " + word)
 
-  def main_loop
-    while !@current_text.empty?
-      puts
-      puts "Current anagram: #{@current_anagram}"
-      puts "Remaining text: #{@current_text}"
-      word = get_word
-      if word
-        @current_text -= word
-        @current_anagram += " " + word
-      end
+      response[:status] = "fail"
+    else
+      # Subtract word from current anagram
+      @current_anagram.slice!(" " + word)
+      @current_text += word
+      response[:text] = @current_text
+      response[:current] = @current_anagram
+      # Anagram remaining text
+      response[:subwords] = current_subwords
+      response[:anagrams] = current_anagrams
+      response[:status] = "subword"
+
     end
+    response
   end
 
   # Helper method to test speed of subword generation
@@ -314,34 +279,3 @@ class Anagrammer
   end
 
 end
-
-# a = Anagrammer.new("small.txt")
-# a = Anagrammer.new("twl06.txt")
-# puts a.current_text.a
-# a.prefer("old")
-# a.unprefer("pauldron")
-# a.prefer("normal")
-
-# while true
-#   puts "Enter search string: "
-#   string = gets.chomp
-#   n = a.node_hash[string]
-#   if !n
-#     puts "Not found."
-#   else
-#     p n.id
-#     p n.terminal ? "Terminal" : "Not terminal"
-#     c = n.children
-#     if c.empty?
-#       puts "No children."
-#     else
-#       p c.map { |node| node.id }
-#     end
-#   end
-# end
-
-# s = a.subwords(a.current_text, a.word_list)
-# s = a.anagrams(a.current_text, a.word_list)
-
-# p a.subword_timer
-# a.main_loop

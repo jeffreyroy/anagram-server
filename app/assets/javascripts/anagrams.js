@@ -2,7 +2,7 @@ $(document).ready(function() {
   getDictionary();
   subwordForm();
   subwordLink();
-  
+  anagramLink();
 });
 
 var getDictionary = function () {
@@ -58,23 +58,25 @@ var submitSubword = function(event) {
   })
 }
 
-var addSubword = function(data) {
+var anagramLink = function() {
+  $("#current-anagram").on("click", ".current-word", removeSubword);
+}
+
+var removeSubword = function(event) {
+  var word =$(this).html();
+  data = "subword=" + word;
   console.log(data);
   $.ajax({
     method: "post",
-    url: "subword",
+    url: "remove",
     data: data,
     dataType: 'json'
   })
   .done(function(response){
-    form.reset();
-    resetButton();
     updateText(response);
   })
   .fail(function(response){
-    form.reset();
-    resetButton();
-    alert("Can't add subword");
+    alert("Can't remove subword");
   })
 }
 
@@ -87,12 +89,14 @@ var resetButton = function() {
 var updateText = function(response) {
   console.log(response);
   $('#remaining').html(response["text"]);
-  $('#current-anagram').html(response["current"]);
-  updateList('#subword-list', response["subwords"]);
-  updateList('#anagrams', response["anagrams"]);
+  // $('#current-anagram').html(response["current"]);
+  var currentWords = response["current"].split(" ");
+  updateList('#current-anagram', currentWords, "current-word");
+  updateList('#subword-list', response["subwords"], "subword");
+  updateList('#anagrams', response["anagrams"], "anagram");
 }
 
-var updateList = function(id, list) {
+var updateList = function(id, list, label) {
   listElement = $(id)
   listElement.empty();
   if(list.length == 0) {
@@ -100,7 +104,7 @@ var updateList = function(id, list) {
   }
   else {
     for (i in list) {
-      listElement.append("<li class='subword'>" + list[i] + "</li>");
+      listElement.append("<li class='" + label + "'>" + list[i] + "</li>");
     }
   }
 }

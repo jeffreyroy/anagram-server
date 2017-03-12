@@ -57,7 +57,7 @@ class Word < String
     Word.new(new_string)
   end
 
-  # Remove letters of subword from string
+  # Remove letters of subword from word
   # Return nil if not a subword
   def -(subword)
     # Quick check to see if includes the same letters
@@ -66,6 +66,10 @@ class Word < String
     Word.construct_word(letters)
   end
 
+  # Add letters of string to word
+  def +(string)
+    Word.new("" + self + string)
+  end
 
   # Subwords
   def ==(word)

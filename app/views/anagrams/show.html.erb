@@ -7,7 +7,9 @@
   <div class="section">
     <h3>Current anagram:</h3>
     <div id="current-anagram">
-      <%= @current %>
+        <% @current_words.each do |word| %>
+          <li class="current-word"><%= word %></li>
+        <% end %>
     </div>
   </div>
 

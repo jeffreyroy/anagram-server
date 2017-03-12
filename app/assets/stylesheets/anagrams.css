@@ -1,5 +1,5 @@
 body {
-  font-family: sans-serif;
+  font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 div {
@@ -38,4 +38,12 @@ h1 {
   list-style-type: none;
   color: darkblue;
   cursor: pointer;
+}
+
+.current-word {
+  list-style-type: none;
+  color: darkblue;
+  cursor: pointer;
+  display: inline;
+  margin-right: .5em;
 }
