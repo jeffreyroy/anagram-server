@@ -1,3 +1,3 @@
 class Subject < ApplicationRecord
-  belongs_to :anagram
+  has_many :anagrams
 end

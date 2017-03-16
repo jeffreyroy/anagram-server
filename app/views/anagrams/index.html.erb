@@ -1,1 +1,9 @@
-<div id='blurb'><%= @blurb %></div>
+<h2>List of Anagrams:</h2>
+
+<ul>
+  <% @subject_list.each do |subject| %>
+    <% subject.anagrams.each do |anagram| %>
+      <li><%= subject.subject_text %> = <%= anagram.anagram_text %></li>
+    <% end %>
+  <% end %>
+</ul>

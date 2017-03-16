@@ -1,10 +1,9 @@
 class AnagramsController < ApplicationController
 
   def index
-    puts "Getting word list..."
-    @word_list = Rails.application.config.anagrammer.word_list
-    puts "Generating blurb..."
-    @blurb = @word_list[rand(10)]
+    @subject_list = Subject.all
+    puts "Subject list: "
+    p @subject_list
   end
 
   def new
