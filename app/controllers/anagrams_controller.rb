@@ -14,6 +14,24 @@ class AnagramsController < ApplicationController
     redirect_to action: 'show', text: @anagram_text
   end
 
+  def save
+    subject_text = Word.new(params[:subject])
+    anagram = Anagram.new(params[:anagram])
+    # locate subject, if it exists
+    subject_list = Subject.all
+    alphabetized_list = subject_list.map { |subject| subject.alphabetized }
+    i = alphabetized_list.index(subject_text.a)
+    if i
+      @subject = subject_list[i]
+    else
+      # if not, create a new subject
+      @subject = Subject.create(subject_text: subject_text)
+    end
+    @subject.anagrams << anagram
+    # save anagram
+    anagram.save
+  end
+
   def show
     puts "Getting text to anagram:"
     @text = Word.new(params[:text])
@@ -32,52 +50,6 @@ class AnagramsController < ApplicationController
     end
   end
 
-  def subword
-    subword = params[:subword]
-    puts "Adding subword #{subword}"
-    a = Rails.application.config.anagrammer
-    @response = a.add_to_anagram(subword)
-    status = @response[:status]
-    respond_to do |format|
-      if status != "fail"
-        # It's a subword
-        format.html do
-          redirect_to "/anagrams/#{a.current_text}"
-        end
-        format.json { render json: @response, status: :ok}
-      else
-        format.html do
-          redirect_to "/anagrams/#{a.current_text}"
-        end
-        # It's not a subword
-        format.json { render json: @response, status: :unprocessable_entity }
-      end
-    end
-  end
-
-
-  def remove
-    subword = params[:subword]
-    puts "Removing subword #{subword}"
-    a = Rails.application.config.anagrammer
-    @response = a.remove_from_anagram(subword)
-    status = @response[:status]
-    respond_to do |format|
-      if status != "fail"
-        # It's a subword
-        format.html do
-          redirect_to "/anagrams/#{a.current_text}"
-        end
-        format.json { render json: @response, status: :ok}
-      else
-        format.html do
-          redirect_to "/anagrams/#{a.current_text}"
-        end
-        # It's not a subword
-        format.json { render json: @response, status: :unprocessable_entity }
-      end
-    end
-  end
 
 
 end

@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20170312211124) do
 
   create_table "subjects", force: :cascade do |t|
     t.text     "subject_text"
+    t.text     "alphabetized"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end

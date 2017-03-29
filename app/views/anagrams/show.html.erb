@@ -7,9 +7,15 @@
   <div class="section">
     <h3>Current anagram:</h3>
     <div id="current-anagram">
-        <% @current_words.each do |word| %>
-          <li class="current-word"><%= word %></li>
-        <% end %>
+      <% @current_words.each do |word| %>
+        <li class="current-word"><%= word %></li>
+      <% end %>
+    </div>
+    <div id="submit-form">
+      <%= form_tag("save", method: "post") do %>
+        <%= submit_tag("Submit", id: "submit-button") %>
+      <% end %>
+
     </div>
   </div>
 
@@ -38,8 +44,8 @@
 
   <div class="section">
     <h3>Add subword:</h3>
-    <%= form_tag("subword", method: "post", id: "subword-form") do %>
-      <%= text_field_tag(:subword) %>
+    <%= form_tag("add_subword", method: "post", id: "subword-form") do %>
+      <%= text_field_tag(:subword, "", id: "subword-field") %>
       <%= submit_tag("Submit", id: "submit-button", data: { disable_with: "Thinking..." }) %>
     <% end %>
   </div>

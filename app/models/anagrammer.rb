@@ -13,6 +13,7 @@ class Anagrammer
     @level = 0
     initialize_word_list
     create_subletter_hash
+    find_subject_id
     # @subword_list = []
     # create_trie
     # get_text
@@ -65,7 +66,9 @@ class Anagrammer
     letter_string_list
   end
 
-
+  def find_subject_id
+    
+  end
 
 
   # Generate list of word objects

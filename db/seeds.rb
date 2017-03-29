@@ -13,6 +13,8 @@
 
 def clear_table
   Vocab.delete_all
+  Subject.delete_all
+  Anagram.delete_all
 end
 
 def read_words_from_file(file_name)
@@ -44,3 +46,9 @@ clear_table
 read_words_from_file("wiki-filtered.txt")
 sort_word_list
 initialize_word_list
+
+s = Subject.create(subject_text: "George Bush")
+a = Anagram.new(anagram_text: "He bugs Gore")
+s.anagrams << a
+a.save
+

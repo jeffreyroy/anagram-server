@@ -3,6 +3,8 @@ $(document).ready(function() {
   subwordForm();
   subwordLink();
   anagramLink();
+  enableButton();
+  saveAnagram();
 });
 
 var getDictionary = function () {
@@ -20,14 +22,14 @@ var submitForm = function(event) {
   console.log(data);
   $.ajax({
     method: "post",
-    url: "subword",
+    url: "add_subword",
     data: data,
     dataType: 'json'
   })
   .done(function(response){
+    updateText(response);
     form.reset();
     resetButton();
-    updateText(response);
   })
   .fail(function(response){
     form.reset();
@@ -46,7 +48,7 @@ var submitSubword = function(event) {
   console.log(data);
   $.ajax({
     method: "post",
-    url: "subword",
+    url: "add_subword",
     data: data,
     dataType: 'json'
   })
@@ -68,7 +70,7 @@ var removeSubword = function(event) {
   console.log(data);
   $.ajax({
     method: "post",
-    url: "remove",
+    url: "remove_subword",
     data: data,
     dataType: 'json'
   })
@@ -80,10 +82,40 @@ var removeSubword = function(event) {
   })
 }
 
-// Need to reset button manually?
+var enableButton = function() {
+  $("#subword-field").on("focus", resetButton);
+}
+
+// This is not working for some reason
+// Why is submit button being disabled by ajax submission?
 var resetButton = function() {
-  $('#submit-button').attr('disabled', false);
+  console.log($('#submit-button').val());
+  $('#submit-button').prop('disabled', false);
   $('#submit-button').val('Submit');
+}
+
+var saveAnagram = function() {
+  $("#submit-form").on("submit", submitAnagram);
+}
+
+var submitAnagram = function(event) {
+  event.preventDefault();
+  form = this;
+  data = {};
+  // Need to add subject text and anagram to data
+  console.log(data);
+  $.ajax({
+    method: "post",
+    url: "save",
+    data: data,
+    dataType: 'json'
+  })
+  .done(function(response){
+    // hide form
+  })
+  .fail(function(response){
+    alert("Can't save anagram");
+  })
 }
 
 var updateText = function(response) {
