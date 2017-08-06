@@ -86,12 +86,15 @@ var enableButton = function() {
   $("#subword-field").on("focus", resetButton);
 }
 
-// This is not working for some reason
-// Why is submit button being disabled by ajax submission?
+// Why does button have to be reenabled manually?
 var resetButton = function() {
-  console.log($('#submit-button').val());
-  $('#submit-button').prop('disabled', false);
-  $('#submit-button').val('Submit');
+  button = $('#subword-button')
+  // console.log(button.val());
+  // console.log(button.prop('disabled'));
+  // $.rails.enableElement(button)
+  // button.removeAttr('disabled')
+  button.prop('disabled', false);
+  button.val('Submit');
 }
 
 var saveAnagram = function() {
@@ -101,7 +104,8 @@ var saveAnagram = function() {
 var submitAnagram = function(event) {
   event.preventDefault();
   form = this;
-  data = {};
+  data=$(this).serialize();
+
   // Need to add subject text and anagram to data
   console.log(data);
   $.ajax({
@@ -118,6 +122,7 @@ var submitAnagram = function(event) {
   })
 }
 
+// Update remaining text after adding or removing subword
 var updateText = function(response) {
   console.log(response);
   $('#remaining').html(response["text"]);
@@ -126,6 +131,14 @@ var updateText = function(response) {
   updateList('#current-anagram', currentWords, "current-word");
   updateList('#subword-list', response["subwords"], "subword");
   updateList('#anagrams', response["anagrams"], "anagram");
+  // Enable submit button if anagram is complete
+  if(response["text"].length == 0) {
+    $('#submit-button').prop('disabled', false);
+  }
+  else {
+    $('#submit-button').prop('disabled', true);
+  }
+
 }
 
 var updateList = function(id, list, label) {

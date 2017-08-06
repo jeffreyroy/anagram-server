@@ -11,9 +11,10 @@
         <li class="current-word"><%= word %></li>
       <% end %>
     </div>
-    <div id="submit-form">
-      <%= form_tag("save", method: "post") do %>
-        <%= submit_tag("Submit", id: "submit-button") %>
+    <div>
+      <%= form_tag("/anagrams/add", method: "post", id: "submit-form") do %>
+        <%= text_field_tag(:subject, @text) %>
+        <%= submit_tag("Submit", id: "submit-button", disabled: true) %>
       <% end %>
 
     </div>
@@ -46,7 +47,7 @@
     <h3>Add subword:</h3>
     <%= form_tag("add_subword", method: "post", id: "subword-form") do %>
       <%= text_field_tag(:subword, "", id: "subword-field") %>
-      <%= submit_tag("Submit", id: "submit-button", data: { disable_with: "Thinking..." }) %>
+      <%= submit_tag("Submit", id: "subword-button", data: { disable_with: "Thinking..." }) %>
     <% end %>
   </div>
 

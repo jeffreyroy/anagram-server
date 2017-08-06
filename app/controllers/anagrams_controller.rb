@@ -14,9 +14,19 @@ class AnagramsController < ApplicationController
     redirect_to action: 'show', text: @anagram_text
   end
 
+  def add
+    print "Params: "
+    p params
+  end
+
   def save
+    print "Params: "
+    p params
+    a = Rails.application.config.anagrammer
     subject_text = Word.new(params[:subject])
-    anagram = Anagram.new(params[:anagram])
+    anagram_text = a.current_anagram.dup
+    anagram = Anagram.new({ anagram_text: anagram_text }) 
+    puts "Saving #{anagram} for subject #{subject_text}..."
     # locate subject, if it exists
     subject_list = Subject.all
     alphabetized_list = subject_list.map { |subject| subject.alphabetized }
@@ -49,7 +59,5 @@ class AnagramsController < ApplicationController
       @anagrams = a.current_anagrams
     end
   end
-
-
 
 end

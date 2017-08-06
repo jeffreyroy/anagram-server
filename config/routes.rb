@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   post 'anagrams' => 'anagrams#create'
   post 'anagrams/add_subword' => 'subwords#add'
   post 'anagrams/remove_subword' => 'subwords#remove'
-  post 'anagrams/save' => 'subwords#save'
+  post 'anagrams/save' => 'anagrams#save'
+  post 'anagrams/add' => 'anagrams#add'
   get 'anagrams/:text' => 'anagrams#show'
   get 'anagrams/:text/show' => 'anagrams#show'
 
