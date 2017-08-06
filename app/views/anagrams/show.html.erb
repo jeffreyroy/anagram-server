@@ -12,8 +12,8 @@
       <% end %>
     </div>
     <div>
-      <%= form_tag("/anagrams/add", method: "post", id: "submit-form") do %>
-        <%= text_field_tag(:subject, @text) %>
+      <%= form_tag("/anagrams/save", method: "post", id: "submit-form") do %>
+        <%= hidden_field_tag(:subject, @text) %>
         <%= submit_tag("Submit", id: "submit-button", disabled: true) %>
       <% end %>
 

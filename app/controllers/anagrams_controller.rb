@@ -14,11 +14,6 @@ class AnagramsController < ApplicationController
     redirect_to action: 'show', text: @anagram_text
   end
 
-  def add
-    print "Params: "
-    p params
-  end
-
   def save
     print "Params: "
     p params

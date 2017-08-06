@@ -8,9 +8,9 @@ $(document).ready(function() {
 });
 
 var getDictionary = function () {
-  
 }
 
+// Submit subword form
 var subwordForm = function() {
   $("#subword-form").on("submit", submitForm);
 }
@@ -38,6 +38,7 @@ var submitForm = function(event) {
   })
 }
 
+// Submit subword via link
 var subwordLink = function() {
   $("#subword-list").on("click", ".subword", submitSubword);
 }
@@ -60,6 +61,7 @@ var submitSubword = function(event) {
   })
 }
 
+// Remove subword via link
 var anagramLink = function() {
   $("#current-anagram").on("click", ".current-word", removeSubword);
 }
@@ -82,21 +84,18 @@ var removeSubword = function(event) {
   })
 }
 
-var enableButton = function() {
-  $("#subword-field").on("focus", resetButton);
-}
+// var enableButton = function() {
+//   $("#subword-field").on("focus", resetButton);
+// }
 
 // Why does button have to be reenabled manually?
 var resetButton = function() {
   button = $('#subword-button')
-  // console.log(button.val());
-  // console.log(button.prop('disabled'));
-  // $.rails.enableElement(button)
-  // button.removeAttr('disabled')
   button.prop('disabled', false);
   button.val('Submit');
 }
 
+// Save anagram via form
 var saveAnagram = function() {
   $("#submit-form").on("submit", submitAnagram);
 }
@@ -105,8 +104,6 @@ var submitAnagram = function(event) {
   event.preventDefault();
   form = this;
   data=$(this).serialize();
-
-  // Need to add subject text and anagram to data
   console.log(data);
   $.ajax({
     method: "post",
@@ -115,7 +112,7 @@ var submitAnagram = function(event) {
     dataType: 'json'
   })
   .done(function(response){
-    // hide form
+    alert("Anagram saved!");
   })
   .fail(function(response){
     alert("Can't save anagram");
