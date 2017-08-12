@@ -2,11 +2,7 @@
   <h2>Enter name or short phrase to anagram</h2>
 
   <%= form_tag("/anagrams", method: "post") do %>
-    <div>
-      <%= text_area_tag(:text, "Enter text here", size: "80x6") %>
-    </div>
-    <div>
-      <%= submit_tag("Find Anagrams!") %>
-    </div>
+      <%= text_field_tag(:text, "Enter text here", size: "40") %>
+      <%= submit_tag("Find Anagrams!", class: "colored submit-button") %>
   <% end %>
 </div>

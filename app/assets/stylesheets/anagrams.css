@@ -1,17 +1,35 @@
 body {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: "Helvetica", sans-serif;
+  /* Adjust font size for mobile devices? */
+  font-size: 200%;
+  background-color: ivory;
 }
 
-div {
-  
+.submit-button {
+
 }
 
 textarea, input {
   font-size: 100%;
+  /*border-color: gray;*/
+}
+
+.colored {
+  color: ivory;
+  background-color: blue;
+  border-color: blue;
+  border-radius: 5px;
+}
+
+.colored:disabled {
+  color: lightgray;
+  background-color: gray;
+  border-color: gray;
 }
 
 h1 {
   text-align: center;
+  padding: 10px;
 }
 
 .section {
@@ -20,30 +38,44 @@ h1 {
 }
 
 .column {
+  background-color: white;
   display: inline-block;
   float: left;
-  margin-top: 2em;
-  padding: 1em;
-  padding-right: 2em;
+  margin: 20px;
+  padding: 20px;
+  /*padding-right: 2em;*/
   border: 1px solid black;
+  width: 40%;
+  box-shadow: 5px 5px 5px gray;
 }
 
 #subwords {
-  width: 20em;
+  /*width: 20em;*/
   height: 40em;
   overflow: auto;
 }
 
+#current-anagram {
+  overflow-wrap: break-word;
+}
+
 .subword {
   list-style-type: none;
+}
+
+.selectable {
   color: darkblue;
   cursor: pointer;
 }
 
+.selectable:hover {
+  font-style: bold;
+  text-shadow: 2px 2px;
+  margin-left: -2px;
+}
+
 .current-word {
   list-style-type: none;
-  color: darkblue;
-  cursor: pointer;
-  display: inline;
+  display: inline-block;
   margin-right: .5em;
 }

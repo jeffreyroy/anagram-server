@@ -6,17 +6,16 @@
 
   <div class="section">
     <h3>Current anagram:</h3>
-    <div id="current-anagram">
+    <ul id="current-anagram">
       <% @current_words.each do |word| %>
-        <li class="current-word"><%= word %></li>
+        <li class="selectable current-word"><%= word %></li>
       <% end %>
-    </div>
+    </ul>
     <div>
       <%= form_tag("/anagrams/save", method: "post", id: "submit-form") do %>
         <%= hidden_field_tag(:subject, @text) %>
-        <%= submit_tag("Submit", id: "submit-button", disabled: true) %>
+        <%= submit_tag("Submit", class: "colored submit-button", id: "submit-button", disabled: true) %>
       <% end %>
-
     </div>
   </div>
 
@@ -37,29 +36,27 @@
       </div>
     </ul>
   </div>
-
 </div>
 
 <div class="column" id="subwords">
   <h2>Add words to anagram</h2>
-
   <div class="section">
     <h3>Add subword:</h3>
     <%= form_tag("add_subword", method: "post", id: "subword-form") do %>
       <%= text_field_tag(:subword, "", id: "subword-field") %>
-      <%= submit_tag("Submit", id: "subword-button", data: { disable_with: "Thinking..." }) %>
+      <%= submit_tag("Submit", class: "colored submit-button", id: "subword-button", data: { disable_with: "Thinking..." }) %>
     <% end %>
   </div>
 
   <div class="section">
     <h3>Suggested words</h3>
-    <ul>
-      <div id="subword-list">
+
+      <ul id="subword-list">
         <% @subwords.each do |word| %>
-          <li class="subword"><%= word %></li>
+          <li class="selectable subword"><%= word %></li>
         <% end %>
-      </div>
-    </ul>
+      </ul>
+
   </div>
 
 </div>

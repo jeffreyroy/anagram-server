@@ -84,9 +84,9 @@ var removeSubword = function(event) {
   })
 }
 
-// var enableButton = function() {
-//   $("#subword-field").on("focus", resetButton);
-// }
+var enableButton = function() {
+  $("#subword-field").on("focus", resetButton);
+}
 
 // Why does button have to be reenabled manually?
 var resetButton = function() {
@@ -125,8 +125,8 @@ var updateText = function(response) {
   $('#remaining').html(response["text"]);
   // $('#current-anagram').html(response["current"]);
   var currentWords = response["current"].split(" ");
-  updateList('#current-anagram', currentWords, "current-word");
-  updateList('#subword-list', response["subwords"], "subword");
+  updateList('#current-anagram', currentWords, "selectable current-word");
+  updateList('#subword-list', response["subwords"], "selectable subword");
   updateList('#anagrams', response["anagrams"], "anagram");
   // Enable submit button if anagram is complete
   if(response["text"].length == 0) {
