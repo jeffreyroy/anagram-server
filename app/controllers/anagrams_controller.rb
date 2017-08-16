@@ -7,6 +7,11 @@ class AnagramsController < ApplicationController
   end
 
   def new
+    if !Rails.application.config.anagrammer
+      render 'initialize'
+      puts "Loading dictionary..."
+      Rails.application.config.anagrammer = Anagrammer.new
+    end
   end
 
   def create
@@ -38,20 +43,24 @@ class AnagramsController < ApplicationController
   end
 
   def show
-    puts "Getting text to anagram:"
-    @text = Word.new(params[:text])
-    puts @text
-    a = Rails.application.config.anagrammer
-    a.set_text(@text)
-    @current = a.current_anagram
-    @current_words = @current.split
-    puts "Word list begins with #{a.word_list[0]}"
-    puts "Generating anagrams..."
-    @subwords = a.current_subwords
-    if @text.length > 25
-      @anagrams = ["(Text too long to anagram; add words)"]
+    if !Rails.application.config.anagrammer
+      redirect_to action: 'new'
     else
-      @anagrams = a.current_anagrams
+      puts "Getting text to anagram:"
+      @text = Word.new(params[:text])
+      puts @text
+      a = Rails.application.config.anagrammer
+      a.set_text(@text)
+      @current = a.current_anagram
+      @current_words = @current.split
+      puts "Word list begins with #{a.word_list[0]}"
+      puts "Generating anagrams..."
+      @subwords = a.current_subwords
+      if @text.length > 25
+        @anagrams = ["(Text too long to anagram; add words)"]
+      else
+        @anagrams = a.current_anagrams
+      end
     end
   end
 
