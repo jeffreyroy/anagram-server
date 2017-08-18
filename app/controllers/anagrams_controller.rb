@@ -7,24 +7,26 @@ class AnagramsController < ApplicationController
   end
 
   def new
-    if !Rails.application.config.anagrammer
-      render 'initialize'
-      puts "Loading dictionary..."
-      Rails.application.config.anagrammer = Anagrammer.new
-    end
+    # if !Rails.application.config.anagrammer
+    #   render 'initialize'
+    #   puts "Loading dictionary..."
+    #   Rails.application.config.anagrammer = Anagrammer.new
+    # end
   end
 
   def create
     @anagram_text = params[:text]
+    session[:subject] = params[:text]
+    session[:current_anagram] = ""
     redirect_to action: 'show', text: @anagram_text
   end
 
   def save
     print "Params: "
     p params
-    a = Rails.application.config.anagrammer
-    subject_text = Word.new(params[:subject])
-    anagram_text = a.current_anagram.dup
+    # a = Rails.application.config.anagrammer
+    subject_text = Word.new(session[:subject])
+    anagram_text = session[:current_anagram]
     anagram = Anagram.new({ anagram_text: anagram_text }) 
     puts "Saving #{anagram} for subject #{subject_text}..."
     # locate subject, if it exists
@@ -43,25 +45,21 @@ class AnagramsController < ApplicationController
   end
 
   def show
-    if !Rails.application.config.anagrammer
-      redirect_to action: 'new'
-    else
+    # if !Rails.application.config.anagrammer
+    #   redirect_to action: 'new'
+    # else
+      session[:current_text] = params[:text]
       puts "Getting text to anagram:"
       @text = Word.new(params[:text])
       puts @text
-      a = Rails.application.config.anagrammer
-      a.set_text(@text)
-      @current = a.current_anagram
+      # a = Rails.application.config.anagrammer
+      @current = session[:current_anagram]
       @current_words = @current.split
-      puts "Word list begins with #{a.word_list[0]}"
       puts "Generating anagrams..."
+      a = Anagrammer.new(@text)
       @subwords = a.current_subwords
-      if @text.length > 25
-        @anagrams = ["(Text too long to anagram; add words)"]
-      else
-        @anagrams = a.current_anagrams
-      end
-    end
+      @anagrams = a.current_anagrams
+    # end
   end
 
 end

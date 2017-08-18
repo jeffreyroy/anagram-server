@@ -30,8 +30,12 @@
     <h3>Suggested anagrams</h3>
     <ul>
       <div id="anagrams">
-        <% @anagrams.each do |anagram| %>
-          <li><%= anagram %></li>
+        <% if @anagrams.empty? %>
+          (Text too long; add subwords.)
+        <% else %>
+          <% @anagrams.each do |anagram| %>
+            <li><%= anagram %></li>
+          <% end %>
         <% end %>
       </div>
     </ul>

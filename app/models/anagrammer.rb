@@ -3,16 +3,21 @@ require_relative 'trie'
 require 'set'
 
 class Anagrammer
-  attr_accessor :word_list, :full_text, :max_anagrams, :max_word_anagrams
+  attr_accessor :full_text, :max_anagrams, :max_word_anagrams
   attr_reader :current_text, :node_hash, :start_node, :current_anagram
 
-  def initialize
-    @max_anagrams = 10
-    @max_word_anagrams = 2
-    @word_list = []
+  MAX_ANAGRAM_LENGTH = 20
+  MAX_ANAGRAMS = 10
+  MAX_WORD_ANAGRAMS = 2
+
+  def initialize(text)
+    @max_anagrams = self.class::MAX_ANAGRAMS
+    @max_word_anagrams = self.class::MAX_WORD_ANAGRAMS
+    # @word_list = []
     @level = 0
-    initialize_word_list
-    create_subletter_hash
+    set_text(text)
+    # initialize_word_list
+    # create_subletter_hash
     find_subject_id
     # @subword_list = []
     # create_trie
@@ -23,12 +28,12 @@ class Anagrammer
   def create_subletter_hash
     puts "Creating subletter hash..."
     count = 0
-    @subletter_hash = {}
+    @@subletter_hash = {}
     # Loop through word list
-    @word_list.each do |word|
+    @@word_list.each do |word|
       count += 1
       print "\r#{count}"
-      @subletter_hash[word] = create_subletter_set(word)
+      @@subletter_hash[word] = create_subletter_set(word)
     end
     puts
   end
@@ -73,14 +78,24 @@ class Anagrammer
 
   # Generate list of word objects
   def initialize_word_list
+    @@word_list = []
     puts "Generating words..."
     count = 0
-    @word_list = Vocab.all.map do |vocab| 
+    @@word_list = Vocab.all.map do |vocab| 
       count += 1
       print "\r#{count}"
       Word.new(vocab.word_string)
     end
     puts
+  end
+
+  def word_list
+    @@word_list ||= nil
+    if !@@word_list
+      initialize_word_list
+      create_subletter_hash
+    end
+    @@word_list
   end
 
   # Get text to anagram
@@ -110,7 +125,7 @@ class Anagrammer
   end
 
   def current_subwords
-    subwords(@current_text, @word_list)
+    subwords(@current_text, word_list)
   end
 
 
@@ -126,12 +141,16 @@ class Anagrammer
       return []
     end
     s = create_big_subletter_set(text)
-    words.select { |word| @subletter_hash[word] <= s }
+    words.select { |word| @@subletter_hash[word] <= s }
   end
 
 
   def current_anagrams
-    anagrams(@current_text, @word_list)
+    # Check whether text is within anagram limit
+    if @current_text.length <= self.class::MAX_ANAGRAM_LENGTH
+      return anagrams(@current_text, word_list)
+    end
+    []
   end
 
   def anagrams(text, words)
@@ -194,45 +213,45 @@ class Anagrammer
   # Move word to top of word list, adding it if not already there
   def prefer(string)
     word = add(string)
-    @word_list.insert(0, word)
+    @@word_list.insert(0, word)
   end
 
   # Move word to bottom of word list
   def unprefer(string)
     word = add(string)
-    @word_list.push(word)
+    @@word_list.push(word)
   end
 
   # Prepare to add string to word list
   def add(string)
     word = Word.new(string)
     remove(word)
-    @subletter_hash[word] = create_subletter_set(word)
+    @@subletter_hash[word] = create_subletter_set(word)
     word
   end
 
   # Remove word from word list
   def remove(word)
-    if (@word_list.include?(word))
-      @word_list.delete(word)
+    if (word_list.include?(word))
+      @@word_list.delete(word)
     end
   end
 
   # Return json response for form submission
-  def add_to_anagram(string)
-    word = Word.new(string)
+  def add_to_anagram(word_string, anagram_string)
+    word = Word.new(word_string)
     response = {}
     # Check whether string is a subword
-    if string.length == 0 || !(@current_text >= word)
+    if word_string.length == 0 || !(@current_text >= word)
       response[:status] = "fail"
     else
       # Put subword at top of list
-      prefer(string)
+      prefer(word_string)
       # Subtract word from current text
       @current_text -= word
       response[:text] = @current_text
-      @current_anagram += " " + word
-      response[:current] = @current_anagram
+      current_anagram = anagram_string + " " + word
+      response[:current] = current_anagram
       if @current_text.empty?
         # If no text remaining, then anagram is complete
         response[:status] = "anagram"
@@ -250,19 +269,19 @@ class Anagrammer
 
 
   # Return json response for form submission
-  def remove_from_anagram(string)
-    word = Word.new(string)
+  def remove_from_anagram(word_string, anagram_string)
+    word = Word.new(word_string)
     response = {}
-    # Check whether string is a subword of anagram
-    if string.length == 0 || !@current_anagram.slice(" " + word)
+    # Check whether word_string is a subword of anagram
+    if word_string.length == 0 || !anagram_string.slice(" " + word)
 
       response[:status] = "fail"
     else
       # Subtract word from current anagram
-      @current_anagram.slice!(" " + word)
+      anagram_string.slice!(" " + word)
       @current_text += word
       response[:text] = @current_text
-      response[:current] = @current_anagram
+      response[:current] = anagram_string
       # Anagram remaining text
       response[:subwords] = current_subwords
       response[:anagrams] = current_anagrams
@@ -276,7 +295,7 @@ class Anagrammer
   def subword_timer(reps=10)
     time = Time.now
     reps.times do
-      subwords(@current_text, @word_list)
+      subwords(@current_text, @@word_list)
     end
     Time.now - time
   end
