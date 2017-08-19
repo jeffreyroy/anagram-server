@@ -135,7 +135,13 @@ var updateText = function(response) {
   else {
     $('#submit-button').prop('disabled', true);
   }
-
+  // Enable reset button if anagram is non-empty
+  if(response["current"].length == 0) {
+    $('#reset-button').prop('disabled', true);
+  }
+  else {
+    $('#reset-button').prop('disabled', false);
+  }
 }
 
 var updateList = function(id, list, label) {
@@ -149,4 +155,26 @@ var updateList = function(id, list, label) {
       listElement.append("<li class='" + label + "'>" + list[i] + "</li>");
     }
   }
+}
+
+
+// Reset anagram via form
+var saveAnagram = function() {
+  $("#reset-form").on("submit", resetAnagram);
+}
+
+var resetAnagram = function(event) {
+  event.preventDefault();
+  // form = this;
+  console.log(data);
+  $.ajax({
+    method: "post",
+    url: "reset"
+  })
+  .done(function(response){
+    location.reload();
+  })
+  .fail(function(response){
+    alert("Can't reset anagram");
+  })
 }

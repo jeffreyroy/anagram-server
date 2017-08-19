@@ -44,6 +44,26 @@ class AnagramsController < ApplicationController
     anagram.save
   end
 
+  def reset
+    session[:current_text] = session[:subject]
+    session[:current_anagram] = ""
+    redirect_to :back
+
+    # @response = {
+    #   text: session[:current_text],
+    #   current: session[:current_anagram],
+    #   subwords: [],
+    #   anagrams: [],
+    #   status: "subword"
+    # }
+    # respond_to do |format|
+    #   format.html do
+    #     redirect_to "/anagrams/#{a.current_text}"
+    #   end
+    #   format.json { render json: @response, status: :ok}
+    # end
+  end
+
   def show
     # if !Rails.application.config.anagrammer
     #   redirect_to action: 'new'
