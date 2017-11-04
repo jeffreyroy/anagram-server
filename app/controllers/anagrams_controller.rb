@@ -21,6 +21,26 @@ class AnagramsController < ApplicationController
     redirect_to action: 'show', text: @anagram_text
   end
 
+  def long
+    @anagram_text = params[:text]
+    session[:subject] = params[:text]
+    session[:current_anagram] = ""
+    session[:current_text] = params[:text]
+    puts "Current text: #{session[:current_text]}"
+    redirect_to action: 'editor'
+  end
+
+  def editor
+    puts "Getting text to anagram:"
+    @text = Word.new(session[:current_text])
+    @sorted = @text.sort
+    puts @text
+    # a = Rails.application.config.anagrammer
+    @current = session[:current_anagram]
+    puts "Generating anagrams..."
+    a = Anagrammer.new(@text)
+  end
+
   def save
     print "Params: "
     p params
@@ -47,7 +67,7 @@ class AnagramsController < ApplicationController
   def reset
     session[:current_text] = session[:subject]
     session[:current_anagram] = ""
-    redirect_to :back
+    # redirect_to :back
 
     # @response = {
     #   text: session[:current_text],

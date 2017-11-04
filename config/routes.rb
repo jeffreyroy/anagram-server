@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   post 'anagrams/save' => 'anagrams#save'
   post 'anagrams/reset' => 'anagrams#reset'
   post 'anagrams/add' => 'anagrams#add'
+  post 'anagrams/long' => 'anagrams#long'
+  get 'anagrams/editor' => 'anagrams#editor'
+
   get 'anagrams/:text' => 'anagrams#show'
   get 'anagrams/:text/show' => 'anagrams#show'
 

@@ -24,6 +24,10 @@ h1 {
 
 }
 
+.letters-verified {
+  color: black;
+}
+
 textarea, input {
   font-size: 100%;
   /*border-color: gray;*/
@@ -60,6 +64,10 @@ textarea, input {
   box-shadow: 5px 5px 5px gray;
 }
 
+.row {
+  height: 20em;
+}
+
 #subwords {
   /*width: 20em;*/
   height: 40em;
@@ -68,6 +76,14 @@ textarea, input {
 
 #current-anagram {
   overflow-wrap: break-word;
+}
+
+.flext-area {
+  width: 100%;
+}
+
+.break-word {
+  word-wrap: break-word;
 }
 
 .subword {

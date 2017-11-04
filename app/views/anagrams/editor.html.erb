@@ -1,0 +1,28 @@
+<!-- Editor for long anagram -->
+<div class="column row">
+  <h2><%= "Subject text (#{@sorted.length} letters)" %></h2>
+  <div>
+    <%= text_area_tag :text, @text, rows: "12", id: "subject-text", class: "flext-area", readonly: true %>
+  </div>
+</div>
+
+<div class="column row">
+  <h2 id="char-count"><%= "Anagram (0 letters)" %></h2>
+  <div>
+    <%= text_area_tag :text, "", rows: "12", id: "anagram-editor", class: "flext-area letters-verified" %>
+  </div>
+</div>
+
+<div class="column row">
+  <h2><%= "Letters remaining:" %></h2>
+  <div>
+    <%= text_area_tag :text, @sorted, rows: "12", id: "remaining-text", class: "flext-area", readonly: true %>
+  </div>
+</div>
+
+<div class="column row">
+  <h2><%= "Letters used:" %></h2>
+  <div>
+    <%= text_area_tag :text, "", rows: "12", id: "letters-used", class: "flext-area", readonly: true %>
+  </div>
+</div>
